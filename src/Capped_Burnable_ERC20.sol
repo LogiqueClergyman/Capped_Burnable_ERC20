@@ -4,18 +4,23 @@ pragma solidity ^0.8.0;
 contract Capped_Burnable_ERC20 {
     string private _name;
     string private _symbol;
-    uint private _cap;
-    uint private _decimals;
-    uint private _totalSupply;
-
-    mapping(address => uint) private _balances;
-    mapping(address => mapping(address => uint)) private _allowances;
+    uint256 private _cap;
+    uint8 private _decimals;
+    uint256 private _totalSupply;
+    event _approve_(
+        address indexed owner,
+        address indexed spender,
+        uint256 value
+    );
+    event _transfer_(address indexed from, address indexed to, uint256 value);
+    mapping(address => uint256) private _balances;
+    mapping(address => mapping(address => uint256)) private _allowances;
 
     constructor(
         string memory name_,
         string memory symbol_,
-        uint cap_,
-        uint decimals_
+        uint256 cap_,
+        uint8 decimals_
     ) {
         _name = name_;
         _symbol = symbol_;
@@ -35,11 +40,11 @@ contract Capped_Burnable_ERC20 {
         return _totalSupply;
     }
 
-    function decimals() public view returns (uint) {
+    function decimals() public view returns (uint8) {
         return _decimals;
     }
 
-    function cap() public view returns (uint) {
+    function cap() public view returns (uint256) {
         return _cap;
     }
 
@@ -50,7 +55,7 @@ contract Capped_Burnable_ERC20 {
     function allowance(
         address owner,
         address spender
-    ) public view returns (uint) {
+    ) public view returns (uint256) {
         return _allowances[owner][spender];
     }
 
@@ -58,12 +63,14 @@ contract Capped_Burnable_ERC20 {
         require(_balances[msg.sender] >= value, "Balance insufficient");
         _balances[msg.sender] -= value;
         _balances[to] += value;
+        emit _transfer_(msg.sender, to, value);
         return true;
     }
 
     function approve(address spender, uint256 value) public returns (bool) {
         require(spender != address(0), "invalid address");
         _allowances[msg.sender][spender] = value;
+        emit _approve_(msg.sender, spender, value);
         return true;
     }
 
@@ -74,16 +81,21 @@ contract Capped_Burnable_ERC20 {
     ) public returns (bool) {
         require(from != address(0), "invalid sender");
         require(to != address(0), "invalid recipient");
-        require(_allowances[from][msg.sender] >= value, "insufficient allowance");
+        require(
+            _allowances[from][msg.sender] >= value,
+            "insufficient allowance"
+        );
         require(_balances[from] >= value, "insufficent balance");
         _allowances[from][msg.sender] -= value;
         _balances[from] -= value;
         _balances[to] += value;
+        emit _transfer_(from, to, value);
         return true;
     }
 
     function mint(address to, uint256 value) public returns (bool) {
         require(to != address(0), "invalid recipient");
+        require(_totalSupply + value <= _cap, "cap exceeded");
         _balances[to] += value;
         _totalSupply += value;
         return true;

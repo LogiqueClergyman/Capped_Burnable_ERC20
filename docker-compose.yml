@@ -1,6 +1,6 @@
 services:
   foundry:
-    image: ghcr.io/foundry-rs/foundry:stable # Or use ghcr.io/foundry-rs/foundry:stable
+    image: ghcr.io/foundry-rs/foundry:stable
     volumes:
       - .:/workspace # Mount the current directory to /workspace inside the container
     working_dir: /workspace # Set the working directory to the mounted volume

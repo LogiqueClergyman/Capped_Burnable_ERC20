@@ -3,4 +3,7 @@ src = "src"
 out = "out"
 libs = ["lib"]
 
+[rpc_endpoints]
+sepolia = "${SEP_RPC_URL}"
+ganache = "http://172.22.224.1:7545"
 # See more config options https://github.com/foundry-rs/foundry/blob/master/crates/config/README.md#all-options
