@@ -1,8 +1,7 @@
 # Compiler files
 cache/
 out/
-node_modules/
-package-lock.json
+lib/
 
 # Ignores development broadcast logs
 !/broadcast
