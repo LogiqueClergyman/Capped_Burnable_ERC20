@@ -34,12 +34,12 @@ jobs:
 
       - name: Run Forge init
         run: |
-          forge init --force
+          forge init --no-git --force
 
       - name: Run Forge install
         run: |
           forge install
-          
+
       - name: Run Forge build
         run: |
           forge build --sizes
