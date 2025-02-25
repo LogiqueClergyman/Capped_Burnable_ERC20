@@ -7,21 +7,14 @@ contract Capped_Burnable_ERC20 {
     uint256 private _cap;
     uint8 private _decimals;
     uint256 private _totalSupply;
-    event _approve_(
-        address indexed owner,
-        address indexed spender,
-        uint256 value
-    );
+
+    event _approve_(address indexed owner, address indexed spender, uint256 value);
     event _transfer_(address indexed from, address indexed to, uint256 value);
+
     mapping(address => uint256) private _balances;
     mapping(address => mapping(address => uint256)) private _allowances;
 
-    constructor(
-        string memory name_,
-        string memory symbol_,
-        uint256 cap_,
-        uint8 decimals_
-    ) {
+    constructor(string memory name_, string memory symbol_, uint256 cap_, uint8 decimals_) {
         _name = name_;
         _symbol = symbol_;
         _cap = cap_;
@@ -52,10 +45,7 @@ contract Capped_Burnable_ERC20 {
         return _balances[account];
     }
 
-    function allowance(
-        address owner,
-        address spender
-    ) public view returns (uint256) {
+    function allowance(address owner, address spender) public view returns (uint256) {
         return _allowances[owner][spender];
     }
 
@@ -74,17 +64,10 @@ contract Capped_Burnable_ERC20 {
         return true;
     }
 
-    function transferFrom(
-        address from,
-        address to,
-        uint256 value
-    ) public returns (bool) {
+    function transferFrom(address from, address to, uint256 value) public returns (bool) {
         require(from != address(0), "invalid sender");
         require(to != address(0), "invalid recipient");
-        require(
-            _allowances[from][msg.sender] >= value,
-            "insufficient allowance"
-        );
+        require(_allowances[from][msg.sender] >= value, "insufficient allowance");
         require(_balances[from] >= value, "insufficent balance");
         _allowances[from][msg.sender] -= value;
         _balances[from] -= value;

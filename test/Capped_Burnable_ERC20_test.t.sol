@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: UNLICENSED
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.13;
 
 import {Test, console} from "forge-std/Test.sol";
@@ -19,9 +19,7 @@ contract TokenTest is Test {
         token.approve(address(0x1), 100);
     }
 
-    function beforeTestSetup(
-        bytes4 testSelector
-    ) public pure returns (bytes[] memory beforeTestCalldata) {
+    function beforeTestSetup(bytes4 testSelector) public pure returns (bytes[] memory beforeTestCalldata) {
         if (testSelector != this.testMint.selector) {
             beforeTestCalldata = new bytes[](1);
             beforeTestCalldata[0] = abi.encodeWithSignature("mintToken()");

@@ -7,12 +7,7 @@ import {Capped_Burnable_ERC20} from "../src/Capped_Burnable_ERC20.sol";
 contract Deploy is Script {
     function run() external returns (Capped_Burnable_ERC20) {
         vm.startBroadcast();
-        Capped_Burnable_ERC20 token = new Capped_Burnable_ERC20(
-            "WeekT",
-            "WKTT",
-            1000000,
-            18
-        );
+        Capped_Burnable_ERC20 token = new Capped_Burnable_ERC20("WeekT", "WKTT", 1000000, 18);
         vm.stopBroadcast();
         console.log("Token deployed at address: ", address(token));
         return token;
